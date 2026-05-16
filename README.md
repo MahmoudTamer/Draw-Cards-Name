@@ -30,10 +30,10 @@ cp .env.example .env
 Edit `.env`:
 
 ```
-VITE_ANTHROPIC_API_KEY=sk-ant-...
+VITE_GEMINI_API_KEY=AIza...
 ```
 
-Get your API key at [console.anthropic.com](https://console.anthropic.com).
+Get your free API key at [aistudio.google.com](https://aistudio.google.com) → Get API key.
 
 ### 3. Run locally
 
@@ -55,7 +55,7 @@ Output is in the `/dist` folder. Serve it with any static host (Vercel, Netlify,
 
 - React 19 + Vite + TypeScript
 - Tailwind CSS v3 (custom navy/gold palette)
-- `@anthropic-ai/sdk` — Claude Sonnet for AI analysis
+- `@google/generative-ai` — Gemini 1.5 Flash for AI analysis (free tier)
 - `vite-plugin-pwa` — Service worker + Web App Manifest
 - localStorage — No backend required
 

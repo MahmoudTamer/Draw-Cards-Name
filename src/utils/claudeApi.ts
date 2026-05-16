@@ -1,4 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk'
+import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { UserProfile, DecisionResult, Category, Currency } from '../types'
 
 const CURRENCY_SYMBOLS: Record<Currency, string> = {
@@ -76,32 +76,16 @@ export async function analyzeDecision(
   notes: string,
   profile: UserProfile,
 ): Promise<DecisionResult> {
-  const apiKey = import.meta.env.VITE_ANTHROPIC_API_KEY
+  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
   if (!apiKey) {
     throw new Error('API_KEY_MISSING')
   }
 
-  const client = new Anthropic({ apiKey, dangerouslyAllowBrowser: true })
+  const genAI = new GoogleGenerativeAI(apiKey)
+  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-20250514',
-    max_tokens: 1024,
-    messages: [
-      {
-        role: 'user',
-        content: buildPrompt(itemName, price, category, notes, profile),
-      },
-    ],
-  })
+  const result = await model.generateContent(buildPrompt(itemName, price, category, notes, profile))
+  const raw = result.response.text().trim().replace(/^```json\s*/, '').replace(/\s*```$/, '')
 
-  const textBlock = response.content.find(b => b.type === 'text')
-  if (!textBlock || textBlock.type !== 'text') {
-    throw new Error('No text response from AI')
-  }
-
-  // Strip any accidental markdown fences
-  const raw = textBlock.text.trim().replace(/^```json\s*/, '').replace(/\s*```$/, '')
-
-  const result = JSON.parse(raw) as DecisionResult
-  return result
+  return JSON.parse(raw) as DecisionResult
 }
