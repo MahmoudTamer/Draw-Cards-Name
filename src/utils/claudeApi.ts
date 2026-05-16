@@ -1,4 +1,3 @@
-import { GoogleGenerativeAI } from '@google/generative-ai'
 import type { UserProfile, DecisionResult, Category, Currency } from '../types'
 
 const CURRENCY_SYMBOLS: Record<Currency, string> = {
@@ -76,16 +75,19 @@ export async function analyzeDecision(
   notes: string,
   profile: UserProfile,
 ): Promise<DecisionResult> {
-  const apiKey = import.meta.env.VITE_GEMINI_API_KEY
-  if (!apiKey) {
-    throw new Error('API_KEY_MISSING')
+  const response = await fetch('/api/analyze', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt: buildPrompt(itemName, price, category, notes, profile) }),
+  })
+
+  if (response.status === 429) throw new Error('RATE_LIMIT_EXCEEDED')
+  if (response.status === 500) {
+    const body = await response.json().catch(() => ({})) as { error?: string }
+    if (body.error === 'API_KEY_MISSING') throw new Error('API_KEY_MISSING')
+    throw new Error('ANALYSIS_FAILED')
   }
+  if (!response.ok) throw new Error('ANALYSIS_FAILED')
 
-  const genAI = new GoogleGenerativeAI(apiKey)
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' })
-
-  const result = await model.generateContent(buildPrompt(itemName, price, category, notes, profile))
-  const raw = result.response.text().trim().replace(/^```json\s*/, '').replace(/\s*```$/, '')
-
-  return JSON.parse(raw) as DecisionResult
+  return response.json() as Promise<DecisionResult>
 }

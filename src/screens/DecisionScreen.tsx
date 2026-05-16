@@ -55,7 +55,9 @@ export default function DecisionScreen({ profile, lang, onDecisionSaved }: Decis
       onDecisionSaved()
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
-      if (msg === 'API_KEY_MISSING') {
+      if (msg === 'RATE_LIMIT_EXCEEDED') {
+        setError(t('rateLimitError', lang))
+      } else if (msg === 'API_KEY_MISSING') {
         setError(t('apiKeyMissing', lang))
       } else {
         setError(t('analysisError', lang))

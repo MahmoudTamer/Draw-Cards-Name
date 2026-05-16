@@ -99,11 +99,14 @@ const ar: Translations = {
   apiKeyMissing: 'مفتاح API غير موجود. يرجى إضافته في ملف .env',
   analysisError: 'حدث خطأ أثناء التحليل. حاول مرة أخرى.',
   fillRequired: 'يرجى ملء جميع الحقول المطلوبة',
+  rateLimitError: 'لقد تجاوزت الحد المسموح به. حاول مرة أخرى بعد ساعة.',
 
   // Misc
   monthly: 'شهرياً',
   of: 'من',
   close: 'إغلاق',
+  privacyPolicy: 'سياسة الخصوصية',
+  privacyContent: 'هذا التطبيق لا يجمع أي بيانات شخصية. جميع بياناتك (الدخل، الأهداف، القرارات) مخزنة محلياً على جهازك فقط ولا تُرسل إلى أي خادم. الطلبات المرسلة لتحليل القرارات لا تحتوي على معلومات تعريفية.',
 }
 
 const en: Translations = {
@@ -203,11 +206,14 @@ const en: Translations = {
   apiKeyMissing: 'API key missing. Please add it to your .env file.',
   analysisError: 'Analysis failed. Please try again.',
   fillRequired: 'Please fill in all required fields',
+  rateLimitError: 'Too many requests. Please try again in an hour.',
 
   // Misc
   monthly: 'monthly',
   of: 'of',
   close: 'Close',
+  privacyPolicy: 'Privacy Policy',
+  privacyContent: 'This app does not collect any personal data. All your data (income, goals, decisions) is stored locally on your device only and is never sent to any server. Requests sent to analyze decisions contain no personally identifiable information.',
 }
 
 const translations: Record<Language, Translations> = { ar, en }

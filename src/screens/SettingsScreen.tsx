@@ -225,6 +225,14 @@ export default function SettingsScreen({ profile, lang, onProfileUpdated, onLang
             )}
           </div>
         </div>
+
+        {/* Privacy Policy */}
+        <div className="bg-navy-800 rounded-2xl p-5">
+          <h3 className="text-white text-sm font-semibold mb-2">{t('privacyPolicy', lang)}</h3>
+          <p className="text-navy-600 text-xs leading-relaxed">{t('privacyContent', lang)}</p>
+        </div>
+
+        <p className="text-center text-navy-600 text-xs pb-2">Qarar v1.0.0</p>
       </div>
     </div>
   )

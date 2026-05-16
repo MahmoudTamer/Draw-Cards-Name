@@ -30,7 +30,7 @@ cp .env.example .env
 Edit `.env`:
 
 ```
-VITE_GEMINI_API_KEY=AIza...
+GEMINI_API_KEY=AIza...
 ```
 
 Get your free API key at [aistudio.google.com](https://aistudio.google.com) → Get API key.
